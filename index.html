@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Forecast</h1>
+        <button onclick="getLocationAndSubmit()" class="btn location-btn">Use My Location</button>
+        <form action="/weather" method="POST" id="weather-form">
+            <input type="text" name="city" placeholder="Enter city name" required>
+            <input type="hidden" name="lat" id="lat">
+            <input type="hidden" name="lon" id="lon">
+            <button type="submit">Get Weather</button>
+        </form>
+    </div>
+
+    <script>
+        function getLocationAndSubmit() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPositionAndSubmit);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPositionAndSubmit(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            document.getElementById('lat').value = lat;
+            document.getElementById('lon').value = lon;
+            document.querySelector('input[name="city"]').removeAttribute('required');
+            document.getElementById('weather-form').submit();
+        }
+    </script>
+</body>
+</html>
